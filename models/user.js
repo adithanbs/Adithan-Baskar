@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
-const crypto = require("crypto")
-const uuid = requier(uuidv1)
+
+const crypto = require("crypto");
+const uuidv1 = requier(uuid/v1);
 
 
 var userSchema = new mongoose.Schema({
@@ -38,7 +39,10 @@ var userSchema = new mongoose.Schema({
     type: Array,
     default: []
   }
-});
+},
+{timestamps:true}
+
+);
 
 userSchema.virtual("password")
  .get( function(password){
@@ -51,7 +55,13 @@ userSchema.virtual("password")
  })
 
 userSchema.method = {
-  securePassword: function(plainpassword) {
+
+autheticate: function(plainpassword){
+return this.securePassword(plainpassword) === this.encry_password;
+},
+
+
+securePassword: function(plainpassword) {
     if (!password) return "";
     try {
       return crypto
